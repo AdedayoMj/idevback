@@ -36,7 +36,8 @@ const create = (req: Request, res: Response, next: NextFunction) => {
         _id: new mongoose.Types.ObjectId(),
         uid,
         name,
-        email
+        email,
+        picture:'',
     });
 
     return user
@@ -147,6 +148,45 @@ const readAll = (req: Request, res: Response, next: NextFunction) => {
             });
         });
 };
+const update = (req: Request, res: Response, next: NextFunction) => {
+    logging.info('Update route called');
+
+    const _id = req.params.userID;
+
+    User.findById(_id)
+        .exec()
+        .then((user) => {
+            if (user) {
+                user.set(req.body);
+                user.save()
+                    .then((savedUser) => {
+                        logging.info(`User with id ${_id} updated`);
+
+                        return res.status(201).json({
+                            user: savedUser
+                        });
+                    })
+                    .catch((error) => {
+                        logging.error(error.message);
+
+                        return res.status(500).json({
+                            message: error.message
+                        });
+                    });
+            } else {
+                return res.status(401).json({
+                    message: 'USER NOT FOUND'
+                });
+            }
+        })
+        .catch((error) => {
+            logging.error(error.message);
+
+            return res.status(500).json({
+                message: error.message
+            });
+        });
+};
 
 export default {
     validate,
@@ -154,5 +194,6 @@ export default {
     login,
     register,
     read,
+    update,
     readAll
 };

@@ -8,6 +8,8 @@ import * as dotenv from 'dotenv';
 import firebaseAdmin from 'firebase-admin';
 
 import userRoutes from './routes/user';
+import htmlCssRoutes from './routes/htmlCss';
+import htmlStatsRoutes from './routes/htmlStats';
 
 
 import cluster from 'cluster';
@@ -87,6 +89,8 @@ if (cluster.isPrimary) {
 
     /** Routes */
     router.use('/users', userRoutes);
+    router.use('/htmlCss', htmlCssRoutes);
+    router.use('/htmlStats', htmlStatsRoutes);
 
     /** Error handling */
     router.use((req, res, next) => {

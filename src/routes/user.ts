@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/validate', extractFirebaseInfo, controller.validate);
 router.get('/:userID', controller.read);
+router.patch('/update/:userID', controller.update);
 router.post('/create', extractFirebaseInfo, controller.create);
 router.post('/login', extractFirebaseInfo, controller.login);
 router.post('/register', extractFirebaseInfo, controller.register);
